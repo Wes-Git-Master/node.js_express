@@ -4,6 +4,7 @@ const readline = require('node:readline/promises')  //  promised methods
 const fs = require('node:fs')
 const fsPromises = require('node:fs/promises')
 const os = require('node:os')
+const {emitter} = require('./emitter')
 
 const foo = async () => {
 
@@ -45,52 +46,52 @@ const foo = async () => {
 
     // * ============================   FS  ============================ *
 
-    const pathToFile = path.join                             // шлях до файлу
-        (__dirname, 'some_dir', 'test.txt')
-    // ----------------------------------------------------------------------------------------------------------
-    await fsPromises.writeFile                                      // створення файлу
-        (pathToFile, 'Hello world !!!')
-    // ----------------------------------------------------------------------------------------------------------
-    const data
-        = await fsPromises.readFile                                 // зчитування даних файлу
-        (pathToFile, 'utf8');
-    console.log(data)
-    // ----------------------------------------------------------------------------------------------------------
-    await fsPromises.appendFile                                     // додавання в файл нових даних
-        (pathToFile, '\n new data: (appendFile)')
-    // ----------------------------------------------------------------------------------------------------------
-    // await fsPromises.unlink                                      // видалення файлу
-    // (path.join(__dirname, 'some_dir', 'test.txt'))
-    // ----------------------------------------------------------------------------------------------------------
-    await fsPromises.mkdir                                          // створення папки
-        (path.join(__dirname, 'some_dir', 'new_dir', 'new_dir2'),
-            {recursive: true})
-    // ----------------------------------------------------------------------------------------------------------
-    // await fsPromises.rmdir                                       // видалення папки
-    // (path.join(__dirname, 'some_dir', 'new_dir', 'new_dir2'))
-    // ----------------------------------------------------------------------------------------------------------
-    await fsPromises.rm                                             // видалення папок & файлів
-        (path.join(__dirname, 'some_dir', 'new_dir'),
-            {recursive: true})
-    // ----------------------------------------------------------------------------------------------------------
-    // await fsPromises.rename                                      // переміщення & перейменування файлу
+    // const pathToFile = path.join                             // шлях до файлу
+    //     (__dirname, 'some_dir', 'test.txt')
+    // // ----------------------------------------------------------------------------------------------------------
+    // await fsPromises.writeFile                                      // створення файлу
+    //     (pathToFile, 'Hello world !!!')
+    // // ----------------------------------------------------------------------------------------------------------
+    // const data
+    //     = await fsPromises.readFile                                 // зчитування даних файлу
+    //     (pathToFile, 'utf8');
+    // console.log(data)
+    // // ----------------------------------------------------------------------------------------------------------
+    // await fsPromises.appendFile                                     // додавання в файл нових даних
+    //     (pathToFile, '\n new data: (appendFile)')
+    // // ----------------------------------------------------------------------------------------------------------
+    // // await fsPromises.unlink                                      // видалення файлу
+    // // (path.join(__dirname, 'some_dir', 'test.txt'))
+    // // ----------------------------------------------------------------------------------------------------------
+    // await fsPromises.mkdir                                          // створення папки
+    //     (path.join(__dirname, 'some_dir', 'new_dir', 'new_dir2'),
+    //         {recursive: true})
+    // // ----------------------------------------------------------------------------------------------------------
+    // // await fsPromises.rmdir                                       // видалення папки
+    // // (path.join(__dirname, 'some_dir', 'new_dir', 'new_dir2'))
+    // // ----------------------------------------------------------------------------------------------------------
+    // await fsPromises.rm                                             // видалення папок & файлів
+    //     (path.join(__dirname, 'some_dir', 'new_dir'),
+    //         {recursive: true})
+    // // ----------------------------------------------------------------------------------------------------------
+    // // await fsPromises.rename                                      // переміщення & перейменування файлу
+    // //     (path.join(__dirname, 'some_dir', 'test.txt'),
+    // //         path.join(__dirname, 'testPc.txt'))
+    // // ----------------------------------------------------------------------------------------------------------
+    // await fsPromises.copyFile                                       // копіювання файлу
     //     (path.join(__dirname, 'some_dir', 'test.txt'),
-    //         path.join(__dirname, 'testPc.txt'))
-    // ----------------------------------------------------------------------------------------------------------
-    await fsPromises.copyFile                                       // копіювання файлу
-        (path.join(__dirname, 'some_dir', 'test.txt'),
-            path.join(__dirname, 'testCopy.txt'))
-    // ----------------------------------------------------------------------------------------------------------
-    const stat
-        = await fsPromises.stat                                     // дані & інформація про файл
-        (path.join(__dirname, 'some_dir', 'test.txt'))
-    console.log(stat.isDirectory())
-    console.log(stat.isFile())
+    //         path.join(__dirname, 'testCopy.txt'))
+    // // ----------------------------------------------------------------------------------------------------------
+    // const stat
+    //     = await fsPromises.stat                                     // дані & інформація про файл
+    //     (path.join(__dirname, 'some_dir', 'test.txt'))
+    // console.log(stat.isDirectory())
+    // console.log(stat.isFile())
 
     // * ========================   FS stream  ======================== *
 
-    const readStream = fs.createReadStream(path.join(__dirname, 'image.jpg'));
-    const writeStream = fs.createWriteStream(path.join(__dirname, 'image_copy.jpg'))
+    // const readStream = fs.createReadStream(path.join(__dirname, 'image.jpg'));
+    // const writeStream = fs.createWriteStream(path.join(__dirname, 'image_copy.jpg'))
 
     // readStream.on('data',(chunk) => {
     //     console.log(chunk)
@@ -100,13 +101,17 @@ const foo = async () => {
 
     // * ===========================   OS   =========================== *
 
-    console.log(os.arch());       // архітектура процесора
-    console.log(os.cpus());       // ядра процесора
-    console.log(os.machine());    // архітектура os
-    console.log(os.hostname());   //
-    console.log(os.homedir());    //
-    console.log(os.freemem());    // вільна память
-    console.log(os.totalmem());   // загальна память
+    // console.log(os.arch());       // архітектура процесора
+    // console.log(os.cpus());       // ядра процесора
+    // console.log(os.machine());    // архітектура os
+    // console.log(os.hostname());   //
+    // console.log(os.homedir());    //
+    // console.log(os.freemem());    // вільна память
+    // console.log(os.totalmem());   // загальна память
+
+    // * ===========================   Emitter   =========================== *
+
+    emitter.emit('test2', 'qwe', 'asd', 100500, true)
 
 }
 void foo()
