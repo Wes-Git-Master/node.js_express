@@ -50,6 +50,7 @@ const foo = async () => {
     await fsPromises.writeFile(path.join(base, 'folder_5', 'File_5.txt'), 'File_5')
 
     //  - 4. Вивести в консоль шляхи до кожного файлу чи папки.
+    //  - 5. Також вивести поряд інформацію про те, чи є це файл чи папка.
 
     console.log(path.join(base, 'folder_1'))
     console.log(path.join(base, 'folder_2'))
@@ -215,7 +216,6 @@ const foo = async () => {
     console.log('isDirectory: ', stat25.isDirectory())
     console.log('isFile: ', stat25.isFile())
 
-    //  - 5. Також вивести поряд інформацію про те, чи є це файл чи папка.
 
 }
 
