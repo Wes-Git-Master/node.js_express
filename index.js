@@ -3,6 +3,7 @@ const path = require('node:path')
 const readline = require('node:readline/promises')  //  promised methods
 const fs = require('node:fs')
 const fsPromises = require('node:fs/promises')
+const os = require('node:os')
 
 const foo = async () => {
 
@@ -88,7 +89,18 @@ const foo = async () => {
 
     // * ========================   FS stream  ======================== *
 
+    const readStream = fs.createReadStream(path.join(__dirname, 'image.jpg'));
+    const writeStream = fs.createWriteStream(path.join(__dirname, 'image_copy.jpg'))
 
+    // readStream.on('data',(chunk) => {
+    //     console.log(chunk)
+    //     writeStream.write(chunk)
+    // })
+    // readStream.pipe(writeStream)
+
+    // * ===========================   OS   =========================== *
+
+    console.log(os.arch());  // архітектура процесора
 
 
 }
