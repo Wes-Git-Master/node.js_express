@@ -100,8 +100,13 @@ const foo = async () => {
 
     // * ===========================   OS   =========================== *
 
-    console.log(os.arch());  // архітектура процесора
-
+    console.log(os.arch());       // архітектура процесора
+    console.log(os.cpus());       // ядра процесора
+    console.log(os.machine());    // архітектура os
+    console.log(os.hostname());   //
+    console.log(os.homedir());    //
+    console.log(os.freemem());    // вільна память
+    console.log(os.totalmem());   // загальна память
 
 }
 void foo()
