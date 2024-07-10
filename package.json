@@ -11,5 +11,8 @@
     "express"
   ],
   "author": "wes",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
