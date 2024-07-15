@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "rimraf dist && tsc-watch --onSuccess 'npm run watch:server'",
-    "watch:server": "nodemon 'src/app.ts' --watch './src'"
+    "start": "rimraf dist && tsc-watch --onSuccess \"npm run watch:server\"",
+    "watch:server": "nodemon src/app.ts --watch ./src"
   },
   "keywords": [
     "node_js",
@@ -17,9 +17,11 @@
     "express": "^4.19.2"
   },
   "devDependencies": {
-    "typescript": "^5.5.3",
+    "@types/express": "^4.17.21",
     "nodemon": "^3.1.4",
     "rimraf": "^6.0.1",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "tsc-watch": "^6.2.0",
+    "typescript": "^5.5.3"
   }
 }
