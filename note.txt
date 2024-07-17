@@ -1,3 +1,0 @@
-npm init
-nvm ( before use need to install on device )
-
