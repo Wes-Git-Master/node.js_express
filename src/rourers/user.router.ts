@@ -11,13 +11,6 @@ router.post(
   // TODO add validation middleware for body
   userController.create,
 );
-
-// router.get(
-//   "/:userId/invoices/:invoiceId",
-//   commonMiddleware.isIdValid("userId"),
-//   commonMiddleware.isIdValid("invoiceId"),
-//   userController.getById,
-// );
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
