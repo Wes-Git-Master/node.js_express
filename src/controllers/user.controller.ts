@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 
+import { IUser } from "../interfaces/user.interface";
 import { userService } from "../services/user.service";
 
-//===========================================================================================================
-
 class UserController {
-  public async getList(res: Response, next: NextFunction) {
+  public async getList(req: Request, res: Response, next: NextFunction) {
     try {
       const result = await userService.getList();
       res.json(result);
@@ -27,23 +26,20 @@ class UserController {
   public async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = Number(req.params.userId);
-      const user = await userService.getById(userId);
-      res.json(user);
+      const result = await userService.getById(userId);
+      res.status(200).json(result);
     } catch (e) {
       next(e);
     }
   }
 
-  public async update(req: Request, res: Response, next: NextFunction) {
+  public async updateById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = Number(req.params.userId);
-      const { name, email, password } = req.body;
-      const updatedUser = await userService.update(userId, {
-        name,
-        email,
-        password,
-      });
-      res.json(updatedUser);
+      const dto = req.body as IUser;
+
+      const result = await userService.update(userId, dto);
+      res.status(201).json(result);
     } catch (e) {
       next(e);
     }
