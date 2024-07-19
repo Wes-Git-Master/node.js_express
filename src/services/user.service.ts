@@ -28,15 +28,34 @@ class UserService {
     return await userRepository.create(dto);
   }
 
-  public async getById(userId: string): Promise<IUser> {
-    return await userRepository.getById(userId);
+  public async getById(userId: string): Promise<IUser | null> {
+    const user = await userRepository.getById(userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
+    return user;
   }
 
-  public async updateById(userId: number, dto: IUser): Promise<IUser> {
-    return await userRepository.updateById(userId, dto);
+  public async updateById(
+    userId: string,
+    dto: Partial<IUser>,
+  ): Promise<IUser | null> {
+    if (dto.password) {
+      delete dto.password;
+    }
+
+    const updatedUser = await userRepository.updateById(userId, dto);
+    if (!updatedUser) {
+      throw new ApiError("User not found", 404);
+    }
+    return updatedUser;
   }
 
-  public async deleteById(userId: number): Promise<void> {
+  public async deleteById(userId: string): Promise<void> {
+    const user = await userRepository.getById(userId);
+    if (!user) {
+      throw new ApiError("User not found", 404);
+    }
     await userRepository.deleteById(userId);
   }
 }

@@ -1,30 +1,37 @@
 import { Router } from "express";
 
 import { userController } from "../controllers/user.controller";
+import { userSchema } from "../joi/user.schema";
+import { userUpdateSchema } from "../joi/user.update.schema";
+import { validationMiddleware } from "../middlewares/body.validation.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 
 const router = Router();
 
 router.get("/", userController.getList);
+
 router.post(
   "/",
-  // TODO add validation middleware for body
+  validationMiddleware.validateBody(userSchema),
   userController.create,
 );
+
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
   userController.getById,
 );
+
 router.put(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
-  // TODO add validation middleware for body
+  validationMiddleware.validateBody(userUpdateSchema),
   userController.updateById,
 );
+
 router.delete(
-  "/:carId",
-  commonMiddleware.isIdValid("carId"),
+  "/:userId",
+  commonMiddleware.isIdValid("userId"),
   userController.deleteById,
 );
 
