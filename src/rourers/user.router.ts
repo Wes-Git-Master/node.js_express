@@ -10,7 +10,7 @@ router.get("/", userController.getList);
 
 router.post(
   "/",
-  commonMiddleware.validateBody(UserValidator.createUser),
+  commonMiddleware.isBodyValid(UserValidator.createUser),
   userController.create,
 );
 
@@ -23,7 +23,7 @@ router.get(
 router.put(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
-  commonMiddleware.validateBody(UserValidator.updateUser),
+  commonMiddleware.isBodyValid(UserValidator.updateUser),
   userController.updateById,
 );
 

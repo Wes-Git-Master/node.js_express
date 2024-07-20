@@ -19,7 +19,7 @@ class CommonMiddleware {
     };
   }
 
-  public validateBody(schema: Joi.ObjectSchema) {
+  public isBodyValid(schema: Joi.ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         req.body = await schema.validateAsync(req.body);
