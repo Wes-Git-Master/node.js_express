@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import Joi from "joi";
 import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors/api-error";
@@ -11,6 +12,17 @@ class CommonMiddleware {
         if (!isObjectIdOrHexString(id)) {
           throw new ApiError("Invalid id", 400);
         }
+        next();
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
+  public validateBody(schema: Joi.ObjectSchema) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        req.body = await schema.validateAsync(req.body);
         next();
       } catch (e) {
         next(e);

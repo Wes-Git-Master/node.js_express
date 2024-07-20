@@ -1,10 +1,8 @@
 import { Router } from "express";
 
 import { userController } from "../controllers/user.controller";
-import { userSchema } from "../joi/user.schema";
-import { userUpdateSchema } from "../joi/user.update.schema";
-import { validationMiddleware } from "../middlewares/body.validation.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
+import { UserValidator } from "../validators/user.validator";
 
 const router = Router();
 
@@ -12,7 +10,7 @@ router.get("/", userController.getList);
 
 router.post(
   "/",
-  validationMiddleware.validateBody(userSchema),
+  commonMiddleware.validateBody(UserValidator.createUser),
   userController.create,
 );
 
@@ -25,7 +23,7 @@ router.get(
 router.put(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
-  validationMiddleware.validateBody(userUpdateSchema),
+  commonMiddleware.validateBody(UserValidator.updateUser),
   userController.updateById,
 );
 

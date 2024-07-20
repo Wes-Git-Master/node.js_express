@@ -16,7 +16,7 @@ app.use("/users", userRouter);
 
 app.use(
   "*",
-  (err: ApiError, req: Request, res: Response, next: NextFunction) => {
+  (err: ApiError, _req: Request, res: Response, _next: NextFunction) => {
     res.status(err.status || 500).json(err.message);
   },
 );
