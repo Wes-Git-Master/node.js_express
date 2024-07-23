@@ -1,11 +1,14 @@
 import { ApiError } from "../errors/api-error";
 import { IUser } from "../interfaces/user.interface";
 import { userRepository } from "../repositories/user.repository";
+import { passwordService } from "./password.service";
 
 class AuthService {
   public async signUp(dto: IUser): Promise<IUser> {
     await this.isEmailExist(dto.email);
-    return await userRepository.create(dto);
+
+    const password = await passwordService.hashPassword(dto.password);
+    return await userRepository.create({ ...dto, password });
   }
 
   //===========================================================================================================
