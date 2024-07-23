@@ -8,12 +8,6 @@ const router = Router();
 
 router.get("/", userController.getList);
 
-router.post(
-  "/",
-  commonMiddleware.isBodyValid(UserValidator.createUser),
-  userController.create,
-);
-
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
