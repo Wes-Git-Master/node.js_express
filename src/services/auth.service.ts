@@ -23,6 +23,28 @@ class AuthService {
     return { user, tokens };
   }
 
+  public async signIn(dto: any): Promise<{ user: IUser; tokens: ITokenPair }> {
+    const user = await userRepository.getByParams({ email: dto.email });
+    if (!user) {
+      throw new ApiError("Invalid credential", 401);
+    }
+
+    const isPasswordCorrect = await passwordService.comparePassword(
+      dto.password,
+      user.password,
+    );
+    if (!isPasswordCorrect) {
+      throw new ApiError("Invalid credentials", 401);
+    }
+
+    const tokens = await tokenService.generateTokenPair({
+      userId: user._id,
+      role: user.role,
+    });
+    await tokenRepository.create({ ...tokens, _userId: user._id });
+    return { user, tokens };
+  }
+
   //===========================================================================================================
 
   private async isEmailExist(email: string): Promise<void> {

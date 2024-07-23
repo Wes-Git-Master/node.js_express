@@ -12,4 +12,10 @@ router.post(
   authController.signUp,
 );
 
+router.post(
+  "/sign-in",
+  // todo : add validation
+  authController.signIn,
+);
+
 export const authRouter = router;
