@@ -26,7 +26,7 @@ class AuthService {
   public async signIn(dto: any): Promise<{ user: IUser; tokens: ITokenPair }> {
     const user = await userRepository.getByParams({ email: dto.email });
     if (!user) {
-      throw new ApiError("Invalid credential", 401);
+      throw new ApiError("Invalid credentials", 401);
     }
 
     const isPasswordCorrect = await passwordService.comparePassword(

@@ -35,6 +35,21 @@ class CommonMiddleware {
     };
   }
 
+  public doesUserExist(userId: string) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const id = req.params[userId];
+        const foundObjectById = await User.findById(id);
+        if (!foundObjectById) {
+          throw new ApiError(`User"${id}"deleted`, 201);
+        }
+        next();
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
   public isBodyValid(schema: Joi.ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {

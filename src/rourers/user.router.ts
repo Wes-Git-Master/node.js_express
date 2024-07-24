@@ -27,6 +27,7 @@ router.put(
 router.delete(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
+  commonMiddleware.doesUserExist("userId"),
   userController.deleteById,
 );
 

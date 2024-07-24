@@ -15,7 +15,7 @@ router.post(
 
 router.post(
   "/sign-in",
-  // todo : add validation
+  commonMiddleware.isBodyValid(UserValidator.login),
   authController.signIn,
 );
 router.post(
