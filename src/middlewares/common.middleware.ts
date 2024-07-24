@@ -3,6 +3,7 @@ import Joi from "joi";
 import { isObjectIdOrHexString } from "mongoose";
 
 import { ApiError } from "../errors/api-error";
+import { User } from "../models/user.model";
 
 class CommonMiddleware {
   public isIdValid(paramName: string) {
@@ -10,6 +11,21 @@ class CommonMiddleware {
       try {
         const id = req.params[paramName];
         if (!isObjectIdOrHexString(id)) {
+          throw new ApiError("Invalid id", 400);
+        }
+        next();
+      } catch (e) {
+        next(e);
+      }
+    };
+  }
+
+  public doesIdExist(userId: string) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const id = req.params[userId];
+        const foundObjectById = await User.findById(id);
+        if (!foundObjectById) {
           throw new ApiError("Invalid id", 400);
         }
         next();

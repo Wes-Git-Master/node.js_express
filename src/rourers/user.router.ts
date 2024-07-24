@@ -19,6 +19,7 @@ router.put(
   "/:userId",
   authMiddleware.checkAccessToken,
   commonMiddleware.isIdValid("userId"),
+  commonMiddleware.doesIdExist("userId"),
   commonMiddleware.isBodyValid(UserValidator.updateUser),
   userController.updateById,
 );
