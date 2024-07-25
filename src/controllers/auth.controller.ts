@@ -27,9 +27,9 @@ class AuthController {
 
   public async refresh(req: Request, res: Response, next: NextFunction) {
     try {
-      const JWTPayload = req.res.locals.JWTPayload as ITokenPayload;
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
       const oldTokensId = req.res.locals.oldTokensId as string;
-      const result = await authService.refresh(JWTPayload, oldTokensId);
+      const result = await authService.refresh(jwtPayload, oldTokensId);
       res.status(201).json(result);
     } catch (e) {
       next(e);

@@ -6,8 +6,6 @@ import { ApiError } from "./errors/api-error";
 import { authRouter } from "./rourers/auth.router";
 import { userRouter } from "./rourers/user.router";
 
-//===========================================================================================================
-
 const app = express();
 
 app.use(express.json());
@@ -18,7 +16,7 @@ app.use("/users", userRouter);
 
 app.use(
   "*",
-  (err: ApiError, _req: Request, res: Response, _next: NextFunction) => {
+  (err: ApiError, req: Request, res: Response, next: NextFunction) => {
     res.status(err.status || 500).json(err.message);
   },
 );

@@ -21,7 +21,14 @@ class AuthService {
       userId: user._id,
       role: user.role,
     });
+    //TODO
+    // const actionToken = await tokenService.generateActionToken({
+    //   userId: user._id,
+    //   role: user.role,
+    // });
+
     await tokenRepository.create({ ...tokens, _userId: user._id });
+
     await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, {
       name: dto.name,
       actionToken: "actionToken",
@@ -81,8 +88,6 @@ class AuthService {
       name: user.name,
     });
   }
-
-  //===========================================================================================================
 
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByParams({ email });

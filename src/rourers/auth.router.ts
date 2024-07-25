@@ -12,12 +12,12 @@ router.post(
   commonMiddleware.isBodyValid(UserValidator.createUser),
   authController.signUp,
 );
-
 router.post(
   "/sign-in",
   commonMiddleware.isBodyValid(UserValidator.login),
   authController.signIn,
 );
+
 router.post(
   "/refresh",
   authMiddleware.checkRefreshToken,
@@ -25,7 +25,6 @@ router.post(
 );
 
 router.post("/logout", authMiddleware.checkAccessToken, authController.logout);
-
 router.post(
   "/logout-all",
   authMiddleware.checkAccessToken,

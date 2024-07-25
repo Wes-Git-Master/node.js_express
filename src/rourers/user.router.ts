@@ -10,24 +10,13 @@ const router = Router();
 router.get("/", userController.getList);
 
 router.get("/me", authMiddleware.checkAccessToken, userController.getMe);
-
 router.put(
   "/me",
   authMiddleware.checkAccessToken,
-  // commonMiddleware.isIdValid("me"),
-  // commonMiddleware.doesIdExist("me"),
   commonMiddleware.isBodyValid(UserValidator.updateUser),
   userController.updateMe,
 );
-
-router.delete(
-  "/me",
-  authMiddleware.checkAccessToken,
-  // commonMiddleware.isIdValid("userId"),
-  // commonMiddleware.doesUserExist("userId"),
-  userController.deleteMe,
-);
-
+router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
 router.get(
   "/:userId",
   commonMiddleware.isIdValid("userId"),
