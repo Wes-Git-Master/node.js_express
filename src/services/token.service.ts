@@ -6,17 +6,14 @@ import { ApiError } from "../errors/api-error";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 
 class TokenService {
-  public async generateTokenPair(payload: ITokenPayload): Promise<ITokenPair> {
+  public async generatePair(payload: ITokenPayload): Promise<ITokenPair> {
     const accessToken = jsonwebtoken.sign(payload, configs.JWT_ACCESS_SECRET, {
       expiresIn: configs.JWT_ACCESS_EXPIRES_IN,
     });
-
     const refreshToken = jsonwebtoken.sign(
       payload,
       configs.JWT_REFRESH_SECRET,
-      {
-        expiresIn: configs.JWT_REFRESH_EXPIRES_IN,
-      },
+      { expiresIn: configs.JWT_REFRESH_EXPIRES_IN },
     );
     return {
       accessToken,
@@ -35,10 +32,10 @@ class TokenService {
           secret = configs.JWT_REFRESH_SECRET;
           break;
         default:
-          throw new ApiError("Token is not valid", 401);
+          throw new ApiError("Token type is not valid", 401);
       }
       return jsonwebtoken.verify(token, secret) as ITokenPayload;
-    } catch (e) {
+    } catch (error) {
       throw new ApiError("Token is not valid", 401);
     }
   }

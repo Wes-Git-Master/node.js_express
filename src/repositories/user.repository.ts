@@ -14,16 +14,18 @@ class UserRepository {
     return await User.create(dto);
   }
 
-  public async getById(userId: string): Promise<IUser | null> {
+  public async getById(userId: string): Promise<IUser> {
     return await User.findById(userId);
   }
 
   public async updateById(userId: string, dto: IUser): Promise<IUser> {
-    return await User.findByIdAndUpdate(userId, dto, { new: true });
+    return await User.findByIdAndUpdate(userId, dto, {
+      returnDocument: "after",
+    });
   }
 
   public async deleteById(userId: string): Promise<void> {
-    await User.findByIdAndDelete(userId);
+    await User.deleteOne({ _id: userId });
   }
 }
 

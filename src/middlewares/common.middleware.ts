@@ -56,7 +56,7 @@ class CommonMiddleware {
         req.body = await schema.validateAsync(req.body);
         next();
       } catch (e) {
-        next(e);
+        next(new ApiError(e.details[0].message, 400));
       }
     };
   }
