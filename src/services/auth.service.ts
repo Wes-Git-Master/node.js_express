@@ -17,7 +17,7 @@ class AuthService {
     const password = await passwordService.hashPassword(dto.password);
     const user = await userRepository.create({ ...dto, password });
 
-    const tokens = await tokenService.generateTokenPair({
+    const tokens = await tokenService.generatePair({
       userId: user._id,
       role: user.role,
     });
@@ -45,7 +45,7 @@ class AuthService {
       throw new ApiError("Invalid credentials", 401);
     }
 
-    const tokens = await tokenService.generateTokenPair({
+    const tokens = await tokenService.generatePair({
       userId: user._id,
       role: user.role,
     });
@@ -57,7 +57,7 @@ class AuthService {
     payload: ITokenPayload,
     oldTokenId: string,
   ): Promise<ITokenPair> {
-    const tokens = await tokenService.generateTokenPair({
+    const tokens = await tokenService.generatePair({
       userId: payload.userId,
       role: payload.role,
     });
