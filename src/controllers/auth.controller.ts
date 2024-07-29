@@ -1,5 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 
+import {
+  IForgotResetPassword,
+  IForgotSendEmail,
+} from "../interfaces/action-token.interface";
 import { ITokenPayload } from "../interfaces/token.interface";
 import { ILogin, IUser } from "../interfaces/user.interface";
 import { authService } from "../services/auth.service";
@@ -59,7 +63,23 @@ class AuthController {
 
   public async forgotPassword(req: Request, res: Response, next: NextFunction) {
     try {
-      await authService.forgotPassword(req.body.email);
+      const dto = req.body as IForgotSendEmail;
+      await authService.forgotPassword(dto);
+      res.sendStatus(204);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  public async forgotPasswordSet(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) {
+    try {
+      const dto = req.body as IForgotResetPassword;
+      const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
+      await authService.forgotPasswordSet(dto, jwtPayload);
       res.sendStatus(204);
     } catch (e) {
       next(e);

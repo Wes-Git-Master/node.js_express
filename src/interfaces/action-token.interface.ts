@@ -7,3 +7,7 @@ export interface IActionToken {
   type: ActionTokenTypeEnum;
   _userId: string | IUser;
 }
+
+export interface IForgotSendEmail extends Pick<IUser, "email"> {}
+
+export interface IForgotResetPassword extends Pick<IUser, "password"> {}

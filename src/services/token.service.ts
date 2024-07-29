@@ -61,27 +61,25 @@ class TokenService {
     });
   }
 
-  // public checkActionToken(
-  //   token: string,
-  //   type: ActionTokenTypeEnum,
-  // ): ITokenPayload {
-  //   try {
-  //     let secret: string;
-  //     switch (type) {
-  //       case TokenTypeEnum.ACCESS:
-  //         secret = configs.JWT_ACCESS_SECRET;
-  //         break;
-  //       case TokenTypeEnum.REFRESH:
-  //         secret = configs.JWT_REFRESH_SECRET;
-  //         break;
-  //       default:
-  //         throw new ApiError("Token type is not valid", 401);
-  //     }
-  //     return jsonwebtoken.verify(token, secret) as ITokenPayload;
-  //   } catch (error) {
-  //     throw new ApiError("Token is not valid", 401);
-  //   }
-  // }
+  public checkActionToken(
+    token: string,
+    type: ActionTokenTypeEnum,
+  ): ITokenPayload {
+    try {
+      let secret: string;
+      switch (type) {
+        case ActionTokenTypeEnum.FORGOT_PASSWORD:
+          secret = configs.JWT_ACTION_FORGOT_PASSWORD_SECRET;
+          break;
+        default:
+          throw new ApiError("Token type is not valid", 401);
+      }
+
+      return jsonwebtoken.verify(token, secret) as ITokenPayload;
+    } catch (error) {
+      throw new ApiError("Token is not valid", 401);
+    }
+  }
 }
 
 export const tokenService = new TokenService();
