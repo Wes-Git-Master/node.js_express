@@ -1,7 +1,9 @@
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { EmailTypeEnum } from "../enums/email-type.enum";
 import { ApiError } from "../errors/api-error";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 import { ILogin, IUser } from "../interfaces/user.interface";
+import { actionTokenRepository } from "../repositories/action.token.repository";
 import { tokenRepository } from "../repositories/token.repository";
 import { userRepository } from "../repositories/user.repository";
 import { emailService } from "./email.service";
@@ -86,6 +88,27 @@ class AuthService {
     const user = await userRepository.getById(payload.userId);
     await emailService.sendEmail(EmailTypeEnum.LOGOUT, user.email, {
       name: user.name,
+    });
+  }
+
+  public async forgotPassword(email: string): Promise<void> {
+    const user = await userRepository.getByParams({ email });
+    if (!user) return;
+
+    const actionToken = await tokenService.generateActionToken(
+      { userId: user._id, role: user.role },
+      ActionTokenTypeEnum.FORGOT_PASSWORD,
+    );
+
+    await actionTokenRepository.create({
+      actionToken,
+      type: ActionTokenTypeEnum.FORGOT_PASSWORD,
+      _userId: user._id,
+    });
+
+    await emailService.sendEmail(EmailTypeEnum.FORGOT_PASSWORD, email, {
+      name: user.name,
+      actionToken,
     });
   }
 
