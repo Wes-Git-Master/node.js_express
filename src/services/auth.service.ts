@@ -34,13 +34,13 @@ class AuthService {
 
     await tokenRepository.create({ ...tokens, _userId: user._id });
     await actionTokenRepository.create({
-      actionToken,
+      actionToken: actionToken,
       type: ActionTokenTypeEnum.VERIFY_EMAIL,
       _userId: user._id,
     });
     await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, {
       name: dto.name,
-      actionToken,
+      actionToken: actionToken,
     });
     return { user, tokens };
   }
