@@ -20,6 +20,9 @@ export const configs = {
   JWT_ACTION_FORGOT_PASSWORD_SECRET_IN:
     process.env.JWT_ACTION_FORGOT_PASSWORD_SECRET_IN,
 
+  JWT_WELCOME_SECRET: process.env.JWT_WELCOME_SECRET,
+  JWT_WELCOME_IN: process.env.JWT_WELCOME_IN,
+
   SMTP_EMAIL: process.env.SMTP_EMAIL,
   SMTP_PASSWORD: process.env.SMTP_PASSWORD,
 };

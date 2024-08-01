@@ -8,6 +8,8 @@ import { tokenRepository } from "../repositories/token.repository";
 import { tokenService } from "../services/token.service";
 
 class AuthMiddleware {
+  //===========================================================================================================
+
   public async checkAccessToken(
     req: Request,
     res: Response,
@@ -35,6 +37,8 @@ class AuthMiddleware {
       next(e);
     }
   }
+
+  //===========================================================================================================
 
   public async checkRefreshToken(
     req: Request,
@@ -64,30 +68,28 @@ class AuthMiddleware {
     }
   }
 
-  public async checkActionToken(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-  ) {
-    try {
-      const actionToken = req.headers.authorization;
-      if (!actionToken) {
-        throw new ApiError("Token is not provided", 401);
-      }
-      const payload = tokenService.checkActionToken(
-        actionToken,
-        ActionTokenTypeEnum.FORGOT_PASSWORD,
-      );
+  //===========================================================================================================
 
-      const entity = await actionTokenRepository.getByActionToken(actionToken);
-      if (!entity) {
-        throw new ApiError("Token is not valid", 401);
+  public checkActionToken(tokenType: ActionTokenTypeEnum) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        const actionToken = req.headers.authorization;
+        if (!actionToken) {
+          throw new ApiError("Token is not provided", 401);
+        }
+        const payload = tokenService.checkActionToken(actionToken, tokenType);
+
+        const entity =
+          await actionTokenRepository.getByActionToken(actionToken);
+        if (!entity) {
+          throw new ApiError("Token is not valid", 401);
+        }
+        req.res.locals.jwtPayload = payload;
+        next();
+      } catch (e) {
+        next(e);
       }
-      req.res.locals.jwtPayload = payload;
-      next();
-    } catch (e) {
-      next(e);
-    }
+    };
   }
 }
 

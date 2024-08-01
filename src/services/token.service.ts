@@ -7,6 +7,7 @@ import { ApiError } from "../errors/api-error";
 import { ITokenPair, ITokenPayload } from "../interfaces/token.interface";
 
 class TokenService {
+  //===========================================================================================================
   public async generatePair(payload: ITokenPayload): Promise<ITokenPair> {
     const accessToken = jsonwebtoken.sign(payload, configs.JWT_ACCESS_SECRET, {
       expiresIn: configs.JWT_ACCESS_EXPIRES_IN,
@@ -21,6 +22,8 @@ class TokenService {
       refreshToken,
     };
   }
+
+  //===========================================================================================================
 
   public checkToken(token: string, type: TokenTypeEnum): ITokenPayload {
     try {
@@ -41,6 +44,8 @@ class TokenService {
     }
   }
 
+  //===========================================================================================================
+
   public async generateActionToken(
     payload: ITokenPayload,
     type: ActionTokenTypeEnum,
@@ -53,6 +58,10 @@ class TokenService {
         secret = configs.JWT_ACTION_FORGOT_PASSWORD_SECRET;
         expiresIn = configs.JWT_ACTION_FORGOT_PASSWORD_SECRET_IN;
         break;
+      case ActionTokenTypeEnum.WELCOME:
+        secret = configs.JWT_WELCOME_SECRET;
+        expiresIn = configs.JWT_WELCOME_IN;
+        break;
       default:
         throw new ApiError("Action token type is not valid", 401);
     }
@@ -60,6 +69,8 @@ class TokenService {
       expiresIn,
     });
   }
+
+  //===========================================================================================================
 
   public checkActionToken(
     token: string,
@@ -70,6 +81,9 @@ class TokenService {
       switch (type) {
         case ActionTokenTypeEnum.FORGOT_PASSWORD:
           secret = configs.JWT_ACTION_FORGOT_PASSWORD_SECRET;
+          break;
+        case ActionTokenTypeEnum.WELCOME:
+          secret = configs.JWT_WELCOME_SECRET;
           break;
         default:
           throw new ApiError("Token type is not valid", 401);

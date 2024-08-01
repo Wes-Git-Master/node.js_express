@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 
 import {
+  IActionToken,
   IForgotResetPassword,
   IForgotSendEmail,
 } from "../interfaces/action-token.interface";
@@ -19,6 +20,20 @@ class AuthController {
     }
   }
 
+  //===========================================================================================================
+
+  public async verify(req: Request, res: Response, next: NextFunction) {
+    try {
+      const dto = req.body as IActionToken;
+      await authService.verify(dto);
+      res.status(201);
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  //===========================================================================================================
+
   public async signIn(req: Request, res: Response, next: NextFunction) {
     try {
       const dto = req.body as ILogin;
@@ -28,6 +43,8 @@ class AuthController {
       next(e);
     }
   }
+
+  //===========================================================================================================
 
   public async refresh(req: Request, res: Response, next: NextFunction) {
     try {
@@ -40,6 +57,8 @@ class AuthController {
     }
   }
 
+  //===========================================================================================================
+
   public async logout(req: Request, res: Response, next: NextFunction) {
     try {
       const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
@@ -51,6 +70,8 @@ class AuthController {
     }
   }
 
+  //===========================================================================================================
+
   public async logoutAll(req: Request, res: Response, next: NextFunction) {
     try {
       const jwtPayload = req.res.locals.jwtPayload as ITokenPayload;
@@ -61,6 +82,8 @@ class AuthController {
     }
   }
 
+  //===========================================================================================================
+
   public async forgotPassword(req: Request, res: Response, next: NextFunction) {
     try {
       const dto = req.body as IForgotSendEmail;
@@ -70,6 +93,8 @@ class AuthController {
       next(e);
     }
   }
+
+  //===========================================================================================================
 
   public async forgotPasswordSet(
     req: Request,

@@ -5,6 +5,7 @@ import { isObjectIdOrHexString } from "mongoose";
 import { ApiError } from "../errors/api-error";
 
 class CommonMiddleware {
+  //===========================================================================================================
   public isIdValid(paramName: string) {
     return (req: Request, res: Response, next: NextFunction) => {
       try {
@@ -19,7 +20,22 @@ class CommonMiddleware {
     };
   }
 
+  //===========================================================================================================
+
   public isBodyValid(validator: ObjectSchema) {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      try {
+        req.body = await validator.validateAsync(req.body);
+        next();
+      } catch (e) {
+        next(new ApiError(e.details[0].message, 400));
+      }
+    };
+  }
+
+  //===========================================================================================================
+
+  public isActionTokenValid(validator: ObjectSchema) {
     return async (req: Request, res: Response, next: NextFunction) => {
       try {
         req.body = await validator.validateAsync(req.body);

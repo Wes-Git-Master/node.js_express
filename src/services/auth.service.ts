@@ -2,6 +2,7 @@ import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { EmailTypeEnum } from "../enums/email-type.enum";
 import { ApiError } from "../errors/api-error";
 import {
+  IActionToken,
   IForgotResetPassword,
   IForgotSendEmail,
 } from "../interfaces/action-token.interface";
@@ -15,6 +16,7 @@ import { passwordService } from "./password.service";
 import { tokenService } from "./token.service";
 
 class AuthService {
+  //===========================================================================================================
   public async signUp(
     dto: IUser,
   ): Promise<{ user: IUser; tokens: ITokenPair }> {
@@ -27,20 +29,37 @@ class AuthService {
       userId: user._id,
       role: user.role,
     });
-    //TODO
-    // const actionToken = await tokenService.generateActionToken({
-    //   userId: user._id,
-    //   role: user.role,
-    // });
+
+    const actionToken = await tokenService.generateActionToken(
+      { userId: user._id, role: user.role },
+      ActionTokenTypeEnum.WELCOME,
+    );
+
+    await actionTokenRepository.create({
+      actionToken,
+      type: ActionTokenTypeEnum.WELCOME,
+      _userId: user._id,
+    });
 
     await tokenRepository.create({ ...tokens, _userId: user._id });
 
     await emailService.sendEmail(EmailTypeEnum.WELCOME, dto.email, {
       name: dto.name,
-      actionToken: "actionToken",
+      actionToken: actionToken,
     });
     return { user, tokens };
   }
+
+  //===========================================================================================================
+
+  public async verify(dto: IActionToken): Promise<ITokenPayload> {
+    return tokenService.checkActionToken(
+      dto.actionToken,
+      ActionTokenTypeEnum.WELCOME,
+    );
+  }
+
+  //===========================================================================================================
 
   public async signIn(
     dto: ILogin,
@@ -66,6 +85,8 @@ class AuthService {
     return { user, tokens };
   }
 
+  //===========================================================================================================
+
   public async refresh(
     payload: ITokenPayload,
     oldTokenId: string,
@@ -79,6 +100,8 @@ class AuthService {
     return tokens;
   }
 
+  //===========================================================================================================
+
   public async logout(payload: ITokenPayload, tokenId: string): Promise<void> {
     await tokenRepository.deleteById(tokenId);
     const user = await userRepository.getById(payload.userId);
@@ -87,6 +110,8 @@ class AuthService {
     });
   }
 
+  //===========================================================================================================
+
   public async logoutAll(payload: ITokenPayload): Promise<void> {
     await tokenRepository.deleteByParams({ _userId: payload.userId });
     const user = await userRepository.getById(payload.userId);
@@ -94,6 +119,8 @@ class AuthService {
       name: user.name,
     });
   }
+
+  //===========================================================================================================
 
   public async forgotPassword(dto: IForgotSendEmail): Promise<void> {
     const user = await userRepository.getByParams({ email: dto.email });
@@ -116,6 +143,8 @@ class AuthService {
     });
   }
 
+  //===========================================================================================================
+
   public async forgotPasswordSet(
     dto: IForgotResetPassword,
     jwtPayload: ITokenPayload,
@@ -132,6 +161,8 @@ class AuthService {
       _userId: jwtPayload.userId,
     });
   }
+
+  //===========================================================================================================
 
   private async isEmailExist(email: string): Promise<void> {
     const user = await userRepository.getByParams({ email });

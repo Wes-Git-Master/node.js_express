@@ -1,6 +1,7 @@
 import { Router } from "express";
 
 import { authController } from "../controllers/auth.controller";
+import { ActionTokenTypeEnum } from "../enums/action-token-type.enum";
 import { authMiddleware } from "../middlewares/auth.middleware";
 import { commonMiddleware } from "../middlewares/common.middleware";
 import { UserValidator } from "../validators/user.validator";
@@ -40,8 +41,10 @@ router.post(
 router.put(
   "/forgot-password",
   commonMiddleware.isBodyValid(UserValidator.forgotPasswordSet),
-  authMiddleware.checkActionToken,
+  authMiddleware.checkActionToken(ActionTokenTypeEnum.FORGOT_PASSWORD),
   authController.forgotPasswordSet,
 );
+
+router.post("/verify", authController.verify);
 
 export const authRouter = router;

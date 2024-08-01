@@ -13,6 +13,8 @@ class UserController {
     }
   }
 
+  //===========================================================================================================
+
   public async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
@@ -23,6 +25,8 @@ class UserController {
     }
   }
 
+  //===========================================================================================================
+
   public async getMe(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.res.locals.jwtPayload.userId as string;
@@ -32,6 +36,8 @@ class UserController {
       next(e);
     }
   }
+
+  //===========================================================================================================
 
   public async updateMe(req: Request, res: Response, next: NextFunction) {
     try {
@@ -44,6 +50,8 @@ class UserController {
       next(e);
     }
   }
+
+  //===========================================================================================================
 
   public async deleteMe(req: Request, res: Response, next: NextFunction) {
     try {
