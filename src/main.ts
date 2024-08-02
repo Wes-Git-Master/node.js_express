@@ -17,6 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/auth", authRouter);
 app.use("/users", userRouter);
 
+//===========================================================================================================
+
 app.use(
   "*",
   (err: ApiError, req: Request, res: Response, next: NextFunction) => {
