@@ -25,6 +25,8 @@ router.get(
   userController.getById,
 );
 
+//===========================================================================================================
+
 router.post(
   "/me/avatar",
   authMiddleware.checkAccessToken,
