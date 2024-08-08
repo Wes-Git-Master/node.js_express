@@ -19,4 +19,4 @@ const handler = async () => {
   }
 };
 
-export const removeOldTokensCron = new CronJob("0 0 */7 * *", handler);
+export const removeOldTokensCron = new CronJob("0 3 * * *", handler);

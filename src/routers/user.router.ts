@@ -23,14 +23,6 @@ router.put(
   userController.updateMe,
 );
 router.delete("/me", authMiddleware.checkAccessToken, userController.deleteMe);
-router.get(
-  "/:userId",
-  commonMiddleware.isIdValid("userId"),
-  userController.getById,
-);
-
-//===========================================================================================================
-
 router.post(
   "/me/avatar",
   authMiddleware.checkAccessToken,
@@ -41,6 +33,12 @@ router.delete(
   "/me/avatar",
   authMiddleware.checkAccessToken,
   userController.deleteAvatar,
+);
+
+router.get(
+  "/:userId",
+  commonMiddleware.isIdValid("userId"),
+  userController.getById,
 );
 
 export const userRouter = router;

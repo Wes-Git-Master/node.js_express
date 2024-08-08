@@ -1,14 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { UploadedFile } from "express-fileupload";
 
-import { IUser } from "../interfaces/user.interface";
+import { IUser, IUserListQuery } from "../interfaces/user.interface";
 import { UserPresenter } from "../presenters/user.presenter";
 import { userService } from "../services/user.service";
 
 class UserController {
   public async getList(req: Request, res: Response, next: NextFunction) {
     try {
-      const query = req.query;
+      const query = req.query as IUserListQuery;
       const result = await userService.getList(query);
       res.json(result);
     } catch (e) {
@@ -19,7 +19,8 @@ class UserController {
   public async getById(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.params.userId;
-      const result = await userService.getById(userId);
+      const user = await userService.getById(userId);
+      const result = UserPresenter.toResponse(user);
       res.json(result);
     } catch (e) {
       next(e);
@@ -29,7 +30,9 @@ class UserController {
   public async getMe(req: Request, res: Response, next: NextFunction) {
     try {
       const userId = req.res.locals.jwtPayload.userId as string;
-      const result = await userService.getMe(userId);
+      const user = await userService.getMe(userId);
+      const result = UserPresenter.toResponse(user);
+
       res.json(result);
     } catch (e) {
       next(e);

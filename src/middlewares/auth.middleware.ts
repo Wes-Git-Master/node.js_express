@@ -76,7 +76,7 @@ class AuthMiddleware {
         const entity =
           await actionTokenRepository.getByActionToken(actionToken);
         if (!entity) {
-          throw new ApiError("Token is not valid ", 401);
+          throw new ApiError("Token is not valid", 401);
         }
         req.res.locals.jwtPayload = payload;
         next();
