@@ -45,4 +45,10 @@ export class UserValidator {
     oldPassword: this.password.required(),
     newPassword: this.password.required(),
   });
+
+  public static listQuery = joi.object({
+    limit: joi.number().min(1).max(100).default(10),
+    page: joi.number().min(1).default(1),
+    search: joi.string().trim(),
+  });
 }
